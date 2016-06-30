@@ -53,8 +53,6 @@ public class StateReachability {
 
 	}
 
-	
-	
 	/**
 	 * Returns the set of {@link State} objects that are reachable from a source state.
 	 * @param from the source state
@@ -62,7 +60,19 @@ public class StateReachability {
 	 * @param usingHashFactory the state hashing factory to use for indexing states and testing equality.
 	 * @return the set of {@link State} objects that are reachable from a source state.
 	 */
-	public static Set <HashableState> getReachableHashedStates(State from, SADomain inDomain, HashableStateFactory usingHashFactory){
+	public static Set <HashableState> getReachableHashedStates(State from, SADomain inDomain, HashableStateFactory usingHashFactory) {
+		return getReachableHashedStates(from, inDomain, usingHashFactory, -1);
+	}
+	
+	/**
+	 * Returns the set of {@link State} objects that are reachable from a source state.
+	 * @param from the source state
+	 * @param inDomain the domain of the state
+	 * @param usingHashFactory the state hashing factory to use for indexing states and testing equality.
+	 * @param maxUnique the maximum number of unique states to expand, is unbounded if negative
+	 * @return the set of {@link State} objects that are reachable from a source state.
+	 */
+	public static Set <HashableState> getReachableHashedStates(State from, SADomain inDomain, HashableStateFactory usingHashFactory, int maxUnique){
 
 		if(!(inDomain.getModel() instanceof FullModel)){
 			throw new RuntimeException( "State reachablity requires a domain with a FullModel, but one is not provided");
@@ -80,9 +90,8 @@ public class StateReachability {
 		hashedStates.add(shi);
 		long firstTime = System.currentTimeMillis();
 		long lastTime = firstTime;
-		while(!openList.isEmpty()){
+		while(!openList.isEmpty() && (maxUnique < 0 || hashedStates.size() < maxUnique)){
 			HashableState sh = openList.poll();
-
 			
 			List<Action> gas = ActionUtils.allApplicableActionsForTypes(actionTypes, sh.s());
 			for(Action ga : gas){
