@@ -496,7 +496,7 @@ public class GridWorldDomain implements DomainGenerator {
 
 	public List<PropositionalFunction> generatePfs(){
 		List<PropositionalFunction> pfs = Arrays.asList(
-				new AtLocationPF(PF_AT_LOCATION, new String[]{CLASS_AGENT, CLASS_LOCATION}),
+			new AtLocationPF(PF_AT_LOCATION, new String[]{CLASS_AGENT, CLASS_LOCATION}),
 			new WallToPF(PF_WALL_NORTH, new String[]{CLASS_AGENT}, 0),
 			new WallToPF(PF_WALL_SOUTH, new String[]{CLASS_AGENT}, 1),
 			new WallToPF(PF_WALL_EAST, new String[]{CLASS_AGENT}, 2),
@@ -810,7 +810,7 @@ public class GridWorldDomain implements DomainGenerator {
 		 */
 		public WallToPF(String name, String[] parameterClasses, int direction) {
 			super(name, parameterClasses);
-			int [] dcomps = GridWorldDomain.this.movementDirectionFromIndex(direction);
+			int [] dcomps = GridWorldDomain.movementDirectionFromIndex(direction);
 			xdelta = dcomps[0];
 			ydelta = dcomps[1];
 		}
